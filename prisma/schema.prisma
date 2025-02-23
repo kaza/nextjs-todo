@@ -1,0 +1,28 @@
+// Placeholder content
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"  // Change to "mysql" if using MySQL
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  name     String
+  password String
+  todos    Todo[]  @relation("UserTodos")
+}
+
+model Todo {
+  id        Int      @id @default(autoincrement())
+  title     String
+  detail    String?
+  status    String   @default("pending")
+  user      User     @relation("UserTodos", fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
