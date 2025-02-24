@@ -37,5 +37,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## curso rules
 https://www.prisma.io/docs/guides/cursor
-https://github.com/kleneway/next-ai-starter/blob/main/.cursorrules
+
+https://github.com/kleneway/next-ai-starter/blob/main/.cursorrules 
+
 https://github.com/PatrickJS/awesome-cursorrules/tree/main/rules
