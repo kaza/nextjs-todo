@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface User {
   id: number;
@@ -46,37 +48,35 @@ export default function DashboardPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
-      <div className="w-full max-w-4xl space-y-8 rounded-lg bg-white p-10 shadow-md">
-        <div>
-          <h1 className="text-center text-3xl font-extrabold text-gray-900">
-            Dashboard
-          </h1>
-          <p className="mt-2 text-center text-sm text-gray-600">
+      <Card className="w-full max-w-4xl">
+        <CardHeader>
+          <CardTitle>Dashboard</CardTitle>
+          <CardDescription>
             Welcome back, {user?.name}!
-          </p>
-        </div>
-
-        <div className="mt-8">
-          <h2 className="text-xl font-bold text-gray-900">Your Profile</h2>
-          <div className="mt-4 rounded-md bg-gray-50 p-4">
-            <p>
-              <span className="font-medium">Email:</span> {user?.email}
-            </p>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="mt-4">
+            <h2 className="text-xl font-bold">Your Profile</h2>
+            <div className="mt-4 rounded-md bg-muted p-4">
+              <p>
+                <span className="font-medium">Email:</span> {user?.email}
+              </p>
+            </div>
           </div>
-        </div>
-
-        <div className="mt-8 flex justify-center">
-          <button
+        </CardContent>
+        <CardFooter className="flex justify-center">
+          <Button
+            variant="destructive"
             onClick={async () => {
               await fetch("/api/auth/logout", { method: "POST" });
               router.push("/login");
             }}
-            className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           >
             Sign out
-          </button>
-        </div>
-      </div>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 } 

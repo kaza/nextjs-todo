@@ -29,6 +29,9 @@ Basic Principles
 - Use JSDoc to document public classes and methods.
 - Maintain a single export per file.
 - Write self-documenting, intention-revealing code.
+- Keep them small, typed with interfaces.
+- Use Tailwind for common UI components like textarea, button, etc. Never use radix or shadcn/ui.
+
 Nomenclature
 - Use PascalCase for classes and interfaces.
 - Use camelCase for variables, functions, methods.
