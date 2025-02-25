@@ -9,7 +9,10 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:integration": "vitest run tests/integration",
+    "test:memory": "npx ts-node scripts/toggle-test-db.ts memory && vitest run",
+    "test:file": "npx ts-node scripts/toggle-test-db.ts file && vitest run"
   },
   "dependencies": {
     "@prisma/client": "^6.4.1",
@@ -25,6 +28,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.2.1",
+    "dotenv": "^16.4.7",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
     "postcss": "^8",
