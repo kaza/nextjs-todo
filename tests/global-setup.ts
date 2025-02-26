@@ -1,20 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 import { execSync } from "child_process";
-import { getTestPrismaClient, isUsingInMemoryDb } from "./utils/test-db-config";
+import { getTestPrismaClient, cleanupTestDatabase } from "./utils/test-db-config";
+import * as fs from 'fs';
 
 // This function will be called once before all tests
 export async function setup() {
   console.log("Setting up test environment...");
   
-  // Log which database mode we're using
-  console.log(`Using ${isUsingInMemoryDb() ? 'in-memory' : 'file-based'} test database`);
+  // Log database URL for debugging
+  console.log(`Database URL: ${process.env.DATABASE_URL}`);
   
   try {
+    // Clean up existing test database file if it exists
+    await cleanupTestDatabase();
+    
     // Run Prisma migrations on the test database
     console.log("Running Prisma migrations on test database...");
-    
-    // Set the DATABASE_URL environment variable for the migration command
-    process.env.DATABASE_URL = process.env.DATABASE_URL;
     
     // Run the migration
     execSync("npx prisma migrate deploy", { stdio: "inherit" });
@@ -30,12 +31,8 @@ export async function setup() {
 export async function teardown() {
   console.log("Tearing down test environment...");
   
-  // If using file-based database, we could clean it up here
-  // But we'll leave it for debugging purposes
-  // If you want to clean it up, uncomment the following:
-  // if (!isUsingInMemoryDb()) {
-  //   await cleanupTestDatabase();
-  // }
+  // Optionally clean up the test database file
+  // await cleanupTestDatabase();
   
   console.log("Test environment teardown completed");
 } 

@@ -2,7 +2,7 @@
 // It will be executed before each test file
 import { vi, afterEach } from 'vitest';
 import dotenv from 'dotenv';
-import { getTestPrismaClient } from './utils/test-db-config';
+import { PrismaClient } from '@prisma/client';
 
 // Load test environment variables
 dotenv.config({ path: '.env.test' });
@@ -23,11 +23,20 @@ global.fetch = vi.fn();
 vi.mock('@prisma/client', async () => {
   const original = await import('@prisma/client');
   
+  // Create a test PrismaClient instance directly
+  const mockPrismaClient = vi.fn().mockImplementation(() => {
+    return new original.PrismaClient({
+      datasources: {
+        db: {
+          url: process.env.DATABASE_URL,
+        },
+      },
+    });
+  });
+  
   return {
     ...original,
-    PrismaClient: vi.fn().mockImplementation(() => {
-      return getTestPrismaClient();
-    }),
+    PrismaClient: mockPrismaClient,
   };
 });
 

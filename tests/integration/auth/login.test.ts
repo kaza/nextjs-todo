@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 import { POST } from "../../../src/app/api/auth/login/route";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { getTestPrismaClient, isUsingInMemoryDb } from "../../utils/test-db-config";
+import { getTestPrismaClient } from "../../utils/test-db-config";
 
 describe("Login API", () => {
   let prisma: PrismaClient;
@@ -18,12 +18,17 @@ describe("Login API", () => {
     // Use our test database configuration
     prisma = getTestPrismaClient();
     
-    console.log(`Running tests with ${isUsingInMemoryDb() ? 'in-memory' : 'file-based'} database`);
+    console.log(`Running tests with file-based database`);
     
-    // Create a test user
+    // Create or update the test user
     const hashedPassword = await bcrypt.hash(testUser.password, 10);
-    await prisma.user.create({
-      data: {
+    await prisma.user.upsert({
+      where: { email: testUser.email },
+      update: {
+        name: testUser.name,
+        password: hashedPassword,
+      },
+      create: {
         email: testUser.email,
         name: testUser.name,
         password: hashedPassword,

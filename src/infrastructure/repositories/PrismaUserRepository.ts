@@ -32,7 +32,7 @@ export class PrismaUserRepository implements UserRepository {
    */
   async authenticate(credentials: UserCredentials): Promise<User | null> {
     const { email, password } = credentials;
-
+    
     const user = await prisma.user.findUnique({
       where: { email },
     });
